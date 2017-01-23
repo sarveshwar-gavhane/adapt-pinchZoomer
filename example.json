@@ -1,0 +1,10 @@
+// To go in the course.json file
+"_pinchZoomer": {
+  "_isEnabled": true
+}
+
+// To go in component.json to which you want to add the extension .
+"_pinchZoomer": {
+  "_isEnabled": true,
+  "_mobileInstructionText":"Please Double tap to Zoom in the Image"
+}
