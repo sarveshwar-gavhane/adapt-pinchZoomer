@@ -13,7 +13,7 @@
 		touch: true, // enables a touch fallback
 		onZoomIn: false,
 		onZoomOut: false,
-		magnify: 0.9
+		magnify: 1
 	};
 
 	// Core Zoom Logic, independent of event listeners.
@@ -34,11 +34,10 @@
 		$target.css('overflow', 'hidden');
 		//$target.css('z-index','999');
 		img.style.width = img.style.height = '';
-		//console.log("zoom called");
 		$(img)
 			.addClass('zoomImg')
 			.css({
-				position: 'absolute',
+				position: 'relative',
 				top: 70,
 				left: 0,
 				opacity: 0,
@@ -52,7 +51,7 @@
 			.appendTo(target);
 
 		return {
-			init: function() {  console.log("init called");
+			init: function() {
 				targetWidth = $target.outerWidth();
 				targetHeight = $target.outerHeight();
 
@@ -82,7 +81,7 @@
 		};
 	};
 
-	$.fn.zoom = function (options) { console.log("1",options);
+	$.fn.zoom = function (options) {
 		return this.each(function () {
 			var
 			settings = $.extend({}, defaults, options || {}),
@@ -99,7 +98,6 @@
 			clicked = false,
 			touched = false,
 			$urlElement;
-			console.log(settings);
 			// If a url wasn't specified, look for an image element.
 			if (!settings.url) {
 				$urlElement = $source.find('img');
@@ -124,10 +122,9 @@
 				
 			}());
 
-			img.onload = function () { console.log("onload called");
+			img.onload = function () {
 				var zoom = $.zoom(target, source, img, settings.magnify);
-				console.log(zoom);
-				function start(e) { console.log("start");
+				function start(e) {
 					zoom.init();
 					zoom.move(e);
 
@@ -135,13 +132,14 @@
 					// and changing position based on mousemovement at the same time.
 					$img.stop()
 					.fadeTo($.support.opacity ? settings.duration : 0, 1, $.isFunction(settings.onZoomIn) ? settings.onZoomIn.call(img) : false);
+					$img.removeClass('display-none');
 				}
 
-				function stop() { console.log("stop");
+				function stop() {
 					$img.stop()
 					.fadeTo(settings.duration, 0, $.isFunction(settings.onZoomOut) ? settings.onZoomOut.call(img) : false);
+					$img.addClass('display-none');
 				}
-				//console.log(settings.on);
 				// Mouse events
 				if (settings.on === 'grab') {
 					$source
@@ -164,14 +162,13 @@
 								}
 							}
 						);
-				} else if (settings.on === 'click') { console.log("click event ",$source[0]);
+				} else if (settings.on === 'click') {
 					$source.on('click.zoom',
-						function (e) { console.log("2222",e);
+						function (e) {
 							if (clicked) {
 								// bubble the event up to the document to trigger the unbind.
 								return;
 							} else {
-								console.log(" inside 2 ");
 								clicked = true;	
 								start(e);
 								$(document).on(mousemove, zoom.move);

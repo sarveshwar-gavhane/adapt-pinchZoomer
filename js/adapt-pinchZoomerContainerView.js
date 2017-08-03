@@ -13,18 +13,17 @@ define([
         },
 
         initialize: function(options) {
-
             this.listenTo(Adapt, 'remove', this.remove);
             this.render();
-            console.log("after render")
         },
 
+     
         activatePinchZoomer: function(event) {
-            
+
             var $currentTarget=$(event.currentTarget);
-            console.log($currentTarget)
-            var targetImage=$(event.currentTarget).find('img')[0].src;
-            $currentTarget.zoom({url : targetImage });
+            $currentTarget.find('.zoomImg').remove();
+            //var targetImage=this.model.get('src');
+            $currentTarget.zoom(); // add { targetImage } if you want to magnify other 
            
         },
 
